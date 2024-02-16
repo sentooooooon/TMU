@@ -1,0 +1,264 @@
+\documentclass[fleqn, a4paper. 12pt]{ltjsarticle} % lualatex guidance.tex
+\usepackage{amsmath,txfonts}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage[margin=31mm]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{listings}
+%ここからソースコードの表示に関する設定
+\lstset{
+  basicstyle={\linespread{0.6}},
+  identifierstyle={\small},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+%  numbers=left,
+  xrightmargin=1em,
+  xleftmargin=2em,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1em
+}
+\newcommand{\XA}[1]{\begingroup \color{red}}
+\newcommand{\AX}[1]{\endgroup}
+\begin{document}
+\begin{titlepage}
+      \begin{center}
+      {
+      \Huge 2021年度\\システムプログラミング実験}
+      
+      \vspace{4cm}
+             {\Huge 第1回\\テクニカルライティング\\
+               実験レポート（模範解答）\\}
+             \vspace{4cm}
+                    {\large 実験日：2021年10月14日（木）\\提出日：2021年10月14日（木）\\}
+                    
+                    {\large 学修番号：10194040\\氏名：柴田祐樹\\班名：Z\\ 共同実験者：下川原英理}
+    \end{center}  
+  \end{titlepage}
+  
+    \section{はじめに}
+    本書ではシステムプログラミング実験第一回の課題を実施した結果を報告する．課題は関数の収束値を計算機を用いて解析するものである．解析結果をグラフと数値により示し，その結果について考察を行う．
+
+    \section{実験の説明}
+    本実験では以下の関係式の収束性を計算機により確かめる．
+    \begin{equation}
+        \label{e1}
+        \lim_{x\to 0} \frac{\sin x}{x} = 1
+    \end{equation}
+    この式が正しいことの証明を付録に記載してある．これを計算機により確かめる方法をここで述べる．
+    
+    数値実験により，徐々に$0$へ近づいていく$x$に対する$x^{-1}\sin x$ の値を計算し，記録する．ここで，計算機でこれを実現するために，どのように$x$を小さくしていくか，という法則を明示する必要がある．これに関して次に説明する．
+    
+    繰り返し回数を$n = 1, 2, ..., N$とする．$x$の点列$x_1, x_2, ..., x_N$として以下式(\ref{e2})の等比数列を用いて，$x\to 0$の極限を模擬することとする．
+    \begin{equation}
+        \label{e2}
+        x_{n+1} = 0.9 x_{n}, n=1,2,..., N-1
+    \end{equation}
+    ただし，$x_1 = 3$とする．$3<\mathrm{\pi}$であり，$\sin x$の周期性を加味すればこの値から実験を始めれば十分である．式(\ref{e1})左辺の分数は$x=0$で不定形となるが，上記等比数列では$x=0$とならずかつ漸近的に$x$が$0$へ近づくため，今回の目的に適していると考える．
+
+    式(\ref{e2})の数列に対し，以下式(\ref{e3})で定義される$f_n$を計算する．
+    \begin{equation}
+        \label{e3}
+        f_{n} = \frac{\sin x_{n}}{x_n}
+    \end{equation}
+    このようにして生成したデータ点の2次元グラフによる可視化と，実際の数値の値から結果を考察する．
+    \section{実験結果}
+    前節で説明した方法をC++言語\footnote{\url{https://isocpp.org/std/the-standard}}により実装した．実験環境の仕様を次に示す．
+    \begin{itemize}
+        \item Central Processing Unit: AMD Ryzen Threadripper 3970X\footnote{\url{https://www.amd.com/en/products/cpu/amd-ryzen-threadripper-3970x}}, 4.5 GHz
+        \item 主記憶: Double Data Rate 4 Synchronous Dynamic Random-Access Memory\footnote{\url{https://www.jedec.org/standards-documents/docs/jesd79-4a}}, 1200 MHz, 256 bit
+        \item コンパイラ: g++ version 11.1.0\footnote{https://gcc.gnu.org/}
+        \item コンパイルコマンド: g++ -std=c++14 x2.cpp (x2.cpp はソースプログラムのファイル名である．)
+        \item Operating System: Arch Linux\footnote{\url{https://archlinux.org/}} (カーネルは 5.14.8-arch1-1を使用)
+        \item 数値型: 倍精度浮動小数点数\footnote{\url{https://www.gnu.org/software/gsl/doc/html/ieee754.html}} 
+    \end{itemize}
+
+    式(\ref{e2})と式(\ref{e3})を$x_1=3, N=32$として計算した結果を図\ref{f1}に示す．グラフ中の座標を$(x, y)$としたとき，図中のFは$(x_n, f_n)$, Sは$(x_n, \sin x_n)$，Xは$(x_n, x_n)$を描画したものである．
+    \begin{figure}[tb]
+        \centering
+        \includegraphics[width=\textwidth]{TW1-1.pdf}
+        \caption{実験結果のグラフ．Fは式(\ref{e3})で定義される$f_n$, Sは$\sin x_n$，Xは$x_n$の値を縦軸$y$, $x_n$の値を横軸$x$として，$n=1,2,...,N$に対しそれぞれ表示している．}
+        \label{f1}
+    \end{figure}
+    図\ref{f1}より，$x$が$0$に近づくに従い，$x^{-1}\sin x$の値が$1$へ近づくことが定性的に確認できる．この図からどれほど$1$へ近づいているを定量的に読み取ることは困難であるため，実際の計算値を見る必要がある．この計算値を表\ref{t1}に示す．有効数字は5桁としている．この表から，計算の範囲内で$1$を超えることなく単調に$f_n$は$1$へ近づいていることを確認できる．
+    \begin{table}[tb]
+        \centering
+        \caption{計算結果．式(\ref{e2})，式(\ref{e3})で定義される$x_n\ \mbox{[-]}, f_n\ \mbox{[-]}$の値を$n=1,2,...,N$について記載している．}
+        \begin{tabular}{rr|rr|rr|rr}
+\hline
+\multicolumn{1}{l}{$x_n$}&\multicolumn{1}{l|}{$f_n$}&\multicolumn{1}{l}{$x_n$}&\multicolumn{1}{l|}{$f_n$}&\multicolumn{1}{l}{$x_n$}&\multicolumn{1}{l|}{$f_n$}&\multicolumn{1}{l}{$x_n$}&\multicolumn{1}{l}{$f_n$}\\
+\hline
+3.0000&0.047040&1.2914&0.74433&0.55591&0.94929&0.23930&0.99048\\
+2.7000&0.15829&1.1623&0.78959&0.50032&0.95880&0.21537&0.99229\\
+2.4300&0.26874&1.0460&0.82736&0.45028&0.96655&0.19383&0.99375\\
+2.1870&0.37315&0.94143&0.85869&0.40526&0.97285&0.17445&0.99494\\
+1.9683&0.46844&0.84729&0.88457&0.36473&0.97798&0.15700&0.99590\\
+1.7715&0.55318&0.76256&0.90586&0.32826&0.98214&0.14130&0.99668\\
+1.5943&0.62705&0.68630&0.92333&0.29543&0.98552&0.12717&0.99731\\
+1.4349&0.69049&0.61767&0.93762&0.26589&0.98826&0.11446&0.99782\\
+\hline
+        \end{tabular}
+        \label{t1}
+    \end{table}
+
+    課題では$N=32$と$x_1=3$と設定した実験を行うように指定されていたが，より細かく見るために本実験では$N=64$，$x_1=3, -3$とした2つの実験をそれぞれ追加で行った．負の値を調べるのは$x\to -0$の場合を検証するためである．また，より$0$に近い点を評価するために式(\ref{e2})の公比を$0.85$とした．図\ref{f2}に，この結果を示す．図の凡例と座標系の見方は図\ref{f1}と同様である．
+    \begin{figure}[tb]
+        \includegraphics[width=\textwidth]{TW1-2.pdf}
+        \caption{追加実験の結果に対するグラフ．Fは式(\ref{e3})で定義される$f_n$, Sは$\sin x_n$，Xは$x_n$の値を縦軸$y$, $x_n$の値を横軸$x$として，$n=1,2,...,N$に対しそれぞれ表示している．}
+        \label{f2}
+    \end{figure}
+
+    図\ref{f2}より，$x$が正負どちらから$0$へ近づいたとしても，$x^{-1}\sin x$の値が$1$へ近づくことが定性的に確認できる．つぎに，定量的にこの傾向を見るために計算値を確認する．この計算値を表\ref{t2}へ示す．有効数字は6桁としている．表では$n=29, 30, ..., 46$の結果についてのみ記載し，他の範囲については冗長であるため記載していない．$n\geq 47$の範囲では$|1-f_n|<10^{-6}$となり常に単調に$f_n$が$1$へ近づいていることを確認している．また，$x_n\approx 10^{-3}$のとき$f_n\approx 10^{-6}$となっていることが表より確認できる．
+    
+    \begin{table}[tb]
+        \centering
+        \caption{追加実験の結果．式(\ref{e2})，式(\ref{e3})で定義される$x_n\ \mbox{[-]}, f_n\ \mbox{[-]}$の値を左2列は$x_1 = -3$として計算した結果を$n=29,30,...46$, 右2列は$x_1=-3$として$n=29,30...,46$について計算した結果を記載している．}
+        \begin{tabular}{rr|rr|rr|rr}
+\hline
+\multicolumn{1}{l}{$10^{-2}x_n$}&\multicolumn{1}{l|}{$f_n$}&\multicolumn{1}{l}{$10^{-2}x_n$}&\multicolumn{1}{l|}{$f_n$}&\multicolumn{1}{l}{$10^{-2}x_n$}&\multicolumn{1}{l|}{$f_n$}&\multicolumn{1}{l}{$10^{-2}x_n$}&\multicolumn{1}{l}{$f_n$}\\
+\hline
+-3.16848&0.999833&-0.733874&0.999991&3.16848&0.999833&0.733874&0.999991\\
+-2.69321&0.999879&-0.623793&0.999994&2.69321&0.999879&0.623793&0.999994\\
+-2.28923&0.999913&-0.530224&0.999995&2.28923&0.999913&0.530224&0.999995\\
+-1.94584&0.999937&-0.450690&0.999997&1.94584&0.999937&0.450690&0.999997\\
+-1.65497&0.999954&-0.383087&0.999998&1.65497&0.999954&0.383087&0.999998\\
+-1.40587&0.999967&-0.325624&0.999998&1.40587&0.999967&0.325624&0.999998\\
+-1.19499&0.999976&-0.276780&0.999999&1.19499&0.999976&0.276780&0.999999\\
+-1.01574&0.999983&-0.235263&0.999999&1.01574&0.999983&0.235263&0.999999\\
+-0.863381&0.999988&-0.199974&0.999999&0.863381&0.999988&0.199974&0.999999\\
+\hline
+        \end{tabular}
+        \label{t2}
+    \end{table}
+    \section{考察}
+    実験結果より部分的にではあるが，式(\ref{e1})が満たされる傾向を確認した．追加実験により，$x \approx 10^{-3}$において$x^{-1}\sin x \approx 10^{-6}$となっていることから，収束速度は$O(x^2)$であると考えられる．実際に，これは式(\ref{e1})の分数項の分母分子に3次の項までのテイラー級数展開を用いて，この項を変形すると，$x=0$付近において，
+    \begin{equation}
+        \frac{\sin x}{x} = \frac{x -\frac{1}{6}x^3}{x} = 1- \frac{1}{6}x^2 = 1 + O(x^2)
+    \end{equation}
+    となることから，妥当であると考える．
+    
+    式(\ref{e1})の厳密な証明は，すべての$x=0$付近の値に対する検証を必要とするため\cite{Calculus}，本実験の結果はこの式が成立することを十分に示すものとは言えない．しかしながら，この実験はどのような関数の収束性についても，それが計算可能であるならば評価することができるものであり，厳密な証明への動機を与えることができることから，有用なものであると考える．
+    \section{おわりに}
+    本書ではシステムプログラミング実験第一回の課題を実験により検証した結果を報告した．実験結果から，定性的に，また部分的ではあるが定量的に関数の収束性を確かめることが可能であると示した．今後，より自明でない，例えば微分方程式の解の収束性などを検証し，この実験のさらなる有用性を示せると考える．本書の執筆に，ソースコードの作成を含めて3時間を要した．ただし付録は除く．
+
+\begin{thebibliography}{00}
+    \bibitem{Calculus} 松坂和夫: 解析入門 上，第1版，岩波書店，2018
+    \end{thebibliography}
+    \section{付録}
+図\ref{af1}に課題の数値実験に用いたソースコードを示す．また，図\ref{af2}に追加実験で用いたソースコードを示す．
+\subsection{与式の収束性の証明}
+式(\ref{e1})の収束性は，$\sin x$の$x$についての微分が$\cos x$であることを示すために必要である．この証明には三角形2つと円弧を用いた証明がよく知られているが，ここでは，テイラー展開を用いた三角関数の定義による証明を記載する．$\exp x$は以下の級数により表すことが可能である．
+\[
+    \exp x = 1 + x + \frac{1}{2} x^2 + \frac{1}{3!}x^3 + \cdots, x\in \mathbb{R}
+\]
+\newcommand{\ci}{\mathrm{i}}
+\newcommand{\cpi}{\mathrm{\pi}}
+$x\mapsto\ci x$と置き換えれば，
+\[
+    \exp (\ci x) = 1 + \ci x + \frac{1}{2} x^2 - \frac{1}{3!}\ci x^3 + \cdots, x\in \mathbb{R}
+\]
+となる．ここで，$\ci^2=-1$は虚数単位である．上記の実部を$\cos x$, 虚部を$\sin x$として定義する．これにより，式(\ref{e1})は，
+\[
+    \lim_{x\to 0}\frac{\sin x}{x} = \lim_{x\to 0}\frac{x  - \frac{1}{3!}x^3 + \frac{1}{5!}x^5 + \cdots }{x} = \lim_{x\to 0} \left [1 - \sum_{i=1}\frac{(-1)^{2i}x^{2i}}{(2i+1)!}  \right]= 1
+\]
+のように変形される．よって，式(\ref{e1})が示される．
+
+テイラー展開による三角関数の定義が幾何学的定義と同等であることを示す．$\cos^2 x + \sin^2 x = 1$は$(a+\ci b)(a - \ci b) = a^2 + b^2$の性質から，次のように示される．
+\[
+    \cos^2 x + \sin^2 x = (\cos x + \ci \sin x)(\cos x - \ci \sin x) = \exp (\ci x) \exp (-\ci x) =  1
+\]
+これより，$\forall x\in \mathbb{R} (\sin x, \cos x\in [-1, 1])$とわかる．加法定理は以下のように示される．
+\[
+    \cos (a + b) + \ci \sin (a+b) = \exp \ci(a + b) = \exp (\ci a)\exp (\ci b) = (\cos a + \ci \sin a)(\cos b + \ci \sin b),
+\]
+すなわち，
+\[
+    \cos (a + b) + \ci \sin (a+b) = \cos a \cos b - \sin a \sin b + \ci(\sin a\cos b + \cos a \sin b)
+\]
+となるため恒等式から，$\sin, \cos$についてのそれぞれの加法定理が得られる．周期性については，
+\begin{equation}
+    \label{ep5}
+    \exp (\ci x) = -1, 0>x
+\end{equation}
+を満たす最小の解を\footnote{厳密解は得られない．ニュートン法などを使う．}$x = \cpi$とすれば，
+\[
+    -1 = \exp (\ci \cpi) = \cos \pi, 0 = \sin \cpi
+\]
+となり，整数$n$に対し，
+\[
+    \exp \ci (x + 2\cpi n) = \exp (2\ci\cpi n)\exp (\ci x) =\left [\exp (\ci\cpi)\right]^{2n}\exp (\ci x) = (-1)^{2n}\exp (\ci x)  = \exp (\ci x)
+\]
+であるから，すなわち，
+\[
+    \cos (x + 2\cpi n) + \ci \sin (x + 2\cpi n) = \cos x + \ci \sin x
+\]
+となるため，恒等式を解けば，$\sin, \cos$それぞれの周期性が得られる．$\cpi$が式(\ref{ep5})を満たす最小の解であることから，$\sin (\cpi/2) = 1$なども得られる． 
+
+    \begin{figure}[b]
+        \begin{lstlisting}[mathescape=true, numbers=left]
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+int main(){
+
+    double x = 3;
+    double r = 0.9;
+    int N=32;
+    ofstream f_out("x2.csv");
+    f_out << setprecision(5);
+    f_out << "x,F,X,sin\n";
+    for(int i=0;i<N;++i){
+        double s = sin(x);
+        f_out << x << "," << s/x << ","<< x << "," << s << "\n";
+        x = r*x;
+    }
+    return 0;
+}
+        \end{lstlisting}
+        \caption{課題の数値実験に用いたソースコード．}
+        \label{af1}
+        \end{figure}
+
+    \begin{figure}
+        \begin{lstlisting}[mathescape=true, numbers=left]
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+int main(){
+
+    double x = 3;
+    double r = 0.85;
+    int N=64;
+    ofstream f_out("x2-2.csv");
+    f_out << setprecision(6);
+    f_out << "x,F,X,sin\n";
+    for(int i=0;i<N;++i){
+        double s = sin(x);
+        f_out << x << "," << s/x << ","<< x << "," << s << "\n";
+        x = r*x;
+    }
+    f_out = ofstream("x2-3.csv");
+    f_out << setprecision(6);
+    f_out << "x,F,X,sin\n";
+    x = -3;
+    for(int i=0;i<N;++i){
+        double s = sin(x);
+        f_out << x << "," << s/x << ","<< x << "," << s << "\n";
+        x = r*x;
+    }
+    return 0;
+}
+        \end{lstlisting}
+        \caption{追加実験に用いたソースコード．}
+        \label{af2}
+        \end{figure}
+\end{document}

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-language" content="ja">
+    <meta name="robots" content="noindex" />
+    <meta name="robots" content="nofollow" />
+    <link rel="stylesheet" href="main.css?version=1.0.2" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/github.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
+    <script>
+        //initialization part.        
+        var s1 = document.createElement('script');
+        s1.src = './main.js?version=1.0.1';
+        s1.async = true;
+        document.head.appendChild(s1);
+        s1.onload = function () {
+            console.log("loading scripts");
+            window.onload = function () {
+                Init(this, "./main.js", function () {
+                    this.MathJax = {
+                        TeX: {
+                            extentions: ["color.js"] //This extension enables color command in latex formulas. 
+                        },
+
+                        displayAlign: "left",
+                        "SVG": {
+                            styles: {
+                                ".MathJax_SVG_Display": {
+                                    margin: "0"
+                                }
+                            }
+                        }
+                    };
+                    var script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js';
+                    script.async = true;
+                    document.head.appendChild(script);
+                    console.log(script);
+                    script.onload = function () {
+                        setPage();
+                        console.log("initialization finished.");
+                    }
+                });
+            }
+        }
+    </script>
+    <svg xmlns="http://www.w3.org/2000/svg" id="i_mousepointer" height="1.8em"  width="1.8em">
+        <defs>
+            <filter id="B4" x="-150%" width="400%" y="-150%" height="400%">
+                <feOffset in="SourceGraphic" result="pre-red" dx="-70" dy="-120" />
+                <feColorMatrix in="pre-red" type="matrix" result="red" values="1 0 0 1 1
+                                                            0 1 0 1 0 
+                                                            0 0 1 1 0 
+                                                            0 0 0 1 0" />
+
+                <feOffset in="SourceGraphic" result="pre-blue" dx="70" dy="-120" />
+                <feColorMatrix in="pre-blue" type="matrix" result="blue" values="1 0 0 0 0
+                                                            0 1 0 0 0 
+                                                            0 0 1 0 1 
+                                                            0 0 0 1 0" />
+                <feBlend mode="screen" in="red" in2="blue" result="main" />
+                <feBlend mode="screen" in="main" in2="SourceGraphic" />
+            </filter>
+        </defs>
+        <circle cx="50%" cy="50%" r="28%" stroke="#ff0000" stroke-width="28%" fill="none" stroke-opacity="0.1" filter="url(#B4)" />
+        <circle cx="50%" cy="50%" r="28%" stroke="#ff1000" stroke-width="16%" fill="none" stroke-opacity="0.25" filter="url(#B4)" />
+        <circle cx="50%" cy="50%" r="28%" stroke="#ff2000" stroke-width="9%" fill="none" stroke-opacity="0.5" filter="url(#B4)" />
+        <circle cx="50%" cy="50%" r="28%" stroke="#ffef40" stroke-width="4%" fill="none" stroke-opacity="0.8" filter="url(#B4)" />
+        <circle cx="50%" cy="50%" r="28%" stroke="#ffffff" stroke-width="1%" fill="none" stroke-opacity="1" />
+        <circle cx="50%" cy="50%" r="10%" stroke="#000000" stroke-width="2%" fill="none" stroke-opacity="1" />
+        <rect width="100%" height="100%" stroke="#ff4040" stroke-width="0%" fill="none" />
+
+        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+    </svg>
+    
+    <style>
+        note {
+            font-size: 0.8em;
+        }
+
+        imp {
+            color: blueviolet
+        }
+
+        arg {
+            color: #2050a0
+        }
+
+        str {
+            color: darkred;
+        }
+
+        type {
+            color: #0000d0;
+            font-weight: bold;
+        }
+
+        name {
+            color: #008060
+        }
+        cmt {
+            color: #208000
+        }
+
+        func {
+            color: #807000
+        }
+
+        as {
+            color: #af0000;
+            font-weight: bold;
+        }
+
+        .cMT>tr td:nth-of-type(2) {
+            text-align-last: left;
+            text-align: left;
+        }
+
+        .cMT>tr th:nth-of-type(3) {
+            text-align-last: left;
+            text-align: left;
+        }
+        esp{
+           display: inline-block; 
+           width: 0.5em;
+        }
+    </style>
+    <title>ネットワーク</title>
+</head>
+
+<body>
+    <header>ネットワーク<br /><cite>
+        システムプログラミング実験</cite>
+    </header>
+    <slide>
+        <author>柴田祐樹</author>
+        <address>東京都立大学 情報科学科</address>
+        <time>2023年度</time>
+    </slide>
+    <footer>
+        <time></time><span>東京都立大学 情報科学科</span><span
+            class="cSlideNumber"></span>
+    </footer>
+    <div class="cLatex">
+        \newcommand{\Fcon}{F_\mathrm{con}}
+    </div>
+    <section>
+        <header>システムプログラミング実験</header>
+        <slide>
+            <ul>
+                <li>
+                    教員紹介
+                    <ul>
+                        <li>
+                            柴田　祐樹
+                        </li>
+                        <li>
+                            太田　葵（TA）
+                        </li>
+                        <li>
+                            後藤　優太（TA）
+                        </li>
+                        <li>森井　祥弘（TA）</li>
+                    </ul>
+                </li>
+            </ul>
+        </slide>
+        <slide>
+            <ul>
+                <li>
+                    本実験の目的
+                    <ul>
+                        <li>
+                            アルゴリズムの実装だけでなくシステム全体を設計する能力の取得
+                            <ul>
+                                <li>
+                                    環境の調査
+                                </li>
+                                <li>
+                                    課題の設定
+                                </li>
+                                <li>
+                                    動作の検証と問題の解決
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            作成したシステムの仕様と試験結果の報告
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    実装では理想的なものを作れるとは限らない
+                    <ul>
+                        <li>
+                            不可避な不具合や自由度の制約に対する妥協案が必要
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </slide>
+    </section>
+    <section>
+        <header>実験予定</header>
+        <slide>
+            <ul>
+                <li>
+                    1日目:
+                    <ul>
+                        <li>
+                            RaspberryPi の基本設定・Linux の説明
+                        </li>
+                        <li>
+                            ネットワーク診断の基礎練習，Bashの復習
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    2日目-4日目: 課題1と課題2
+                    <ul>
+                        <li>
+                            課題1: TCP/IP 上のアプリケーションプロトコル設計の基礎
+                        </li>
+                        <li>
+                            課題2: 雑談アプリの作成
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </slide>
+        <section>
+            <header>報告書について</header>
+            <slide>
+                <ul>
+                    <li>
+                        指導書（instructioin.pdf）第7節，テクニカル・ライティングを参照
+                    </li>
+                    <li>
+                        最低基準に満たない質の場合再提出あり
+                    </li>
+                </ul>
+            </slide>
+        </section>
+        <section>
+            <header>通信について</header>
+            <slide>
+                <ul>
+                    <li>
+                        課題1から通信を開始
+                        <ul>
+                            <li>
+                                他人と通信して実験
+                            </li>
+                            <li>
+                                班の中で情報は共有して進捗は揃えること
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        進捗を揃える理由
+                        <ul>
+                            <li>
+                                通信（Communication）では通信規約に関し合意が必要
+                            </li>
+                            <li>
+                                機械で行う前に作成者同士で意思疎通ができなければ達成不能
+                            </li>
+                            <li>
+                                他人と協力することも実験の目的
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        プログラム，報告書の書き方のコツを共有してもらいたい．ただし剽窃は避けること
+                    </li>
+                </ul>
+            </slide>
+        </section>
+    </section>
+    <section>
+        <header>資料</header>
+        <slide>
+            <ul>
+                <li>
+                    instruction.pdf: 実験指導書 (最新版を利用)
+                </li>
+                <li>
+                    sup.pdf: 補助資料
+                </li>
+                <li>
+                    tutorial.html: 本資料
+                </li>
+                <li>
+                    bash_prac.sh: Bash 練習コマンド集（基礎演習のもの）
+                </li>
+                <li>
+                    ソースコード
+                    <ul>
+                        <li>
+                            udp_time_client.cpp
+                        </li>
+                        <li>
+                            udp_time_server.cpp
+                        </li>
+                        <li>
+                            tcp_time_client.cpp
+                        </li>
+                        <li>
+                            tcp_time_server.cpp
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </slide>
+        <slide>
+            <ul>
+                <li>
+                    ソースコード
+                    <ul>
+                        <li>
+                            ex_gettimeofday.cpp: 時間計測
+                        </li>
+                        <li>
+                            command.client.cpp: 課題2の参考
+                        </li>
+                        <li>
+                            command.server.cpp: 課題2の参考
+                        </li>
+                        <li>
+                            Makefile: コンパイルコマンドを記載したスクリプト
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </slide>
+    </section>
+    <section>
+        <header>RaspberryPi 基本設定</header>
+        <slide>
+            <ul>
+                <li>以下のものを配布
+                <ul>
+<li>Raspberry Pi 本体</li>
+<li>SD カード</li>
+<li>USB type-C 電源</li>
+<li>電源スイッチ</li>
+<li>筐体</li>
+<li>放熱器</li>
+<li>HDMI ケーブル</li>
+                </ul>
+                </li>
+            </ul>
+        </slide>
+        <slide>
+            <ul>
+            <li>
+                プログラミング入門
+                <ol>
+                    <li>ターミナルを開き mkdir 任意のディレクトリ名（ここではAとする）を入力，階層を作成</li>
+                    <li>vscode か，geany で test.cpp を作成，この階層へ保存</li>
+                    <li> 階層 A で g++ test.cpp -o a.exeを実行してコンパイル</li>
+                    <li>./a.exe を実行し，動作を確認</li>
+                </ol>
+            </li>
+          </ul>   
+        
+        </slide>
+        <section>
+            <header>Linux 基本</header>
+            <slide>
+                <ul>
+                    <li>
+                        Kernel が中心
+                        <ul>
+                            <li>
+                                ハードウェアを抽象化
+                            </li>
+                            <li>
+                                Shell, System Call (API) を提供
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <figure>
+                    <img src="kernel.svg" style="width:50%;" />
+                </figure>
+            </slide>
+            <slide>
+                <ul>
+                    <li>
+                        Shell: コマンド や ボタン
+                        <ul>
+                            <li>
+                                Command Line Interface (CLI)
+                                <ul>
+                                    <li>
+                                        文字列によるクエリで操作
+                                    </li>
+                                    <li>
+                                        作図が困難
+                                    </li>
+                                    <li>
+                                        検索が高速
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                Graphical User Interface (GUI)
+                                <ul>
+                                    <li>
+                                        ポインティング等空間的な操作
+                                    </li>
+                                    <li>
+                                        作図が容易
+                                    </li>
+                                    <li>
+                                        検索が困難
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>
+                    必須機能: ファイル検索，プログラムの起動
+                </p>
+            </slide>
+            <slide>
+                <ul>
+                    <li>
+                        ファイル検索（操作）とプログラム起動における比較
+                        <ul>
+                            <li>
+                                CLI
+                                <ul>
+                                    <li>
+                                        検索: ls, cd, pwd, grep
+                                    </li>
+                                    <li>
+                                        操作: mkdir, rm, cp
+                                    </li>
+                                    <li>
+                                        起動: ./a.out
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                GUI
+                                <ul>
+                                    <li>
+                                        検索: ファイルエクスプローラ
+                                    </li>
+                                    <li>
+                                        操作: ドラックアンドドロップ，コピペ
+                                    </li>
+                                    <li>
+                                        起動: ダブルクリック，右クリック
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>
+                    CLI はシェルスクリプトとして手順自動化が容易
+                </p>
+            </slide>
+        </section>
+        <section>
+            <header>RaspberryPi での編集</header>
+            <slide>
+                <ul>
+                    <li>
+                        nano: 初心者用 CLIテキストエディタ
+                    </li>
+                    <li>
+                        vim: 高機能CLIテキストエディタ
+                    </li>
+                    <li>
+                        visual studio code: GUI のテキストエディタ
+                        <ul>
+                            <li>
+                                <img src="rasb.svg" /> > プログラミング > Visual Studio Code
+                            </li>
+                            <li>
+                                Alt + Z: 行の折り返し（Word wrap）を有効化
+                            </li>
+                            <li>
+                                ファイル名に拡張子を着けることで配色に対応
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        もちろん nano, vi, vim, emacs などの利用も可
+                    </li>
+                </ul>
+            </slide>
+        </section>
+        <section>
+            <header>サンプルプログラムのコンパイル方法</header>
+            <slide>
+                <ul>
+                    <li>
+                        ソースファイルすべてと，Makefileを同じ階層に配置
+                    </li>
+                    <li>
+                        端末で上記階層へ移動
+                    </li>
+                    <li>
+                        コマンド make を実行
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        make 
+                        <ul>
+                            <li>
+                                ファイルの更新を検出して更新されたもにのみMakefile中のコマンドを実行
+                            </li>
+                            <li>
+                                Makefile の中身を確認: g++ のコンパイルコマンドが存在
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        詳しくは README.md を参照
+                    </li>
+                </ul>
+            </slide>
+        </section>
+    </section>
+</body>
+
+</html>

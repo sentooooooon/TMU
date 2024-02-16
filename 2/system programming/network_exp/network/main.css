@@ -1,0 +1,354 @@
+
+html{
+    background-color: #000000;
+    color: #101010;
+}
+
+#i_mousepointer
+{
+    z-index: 1;
+    pointer-events: none;
+    position: fixed;
+    display: none;
+}
+body{
+    width: 177.8rem;
+    margin:auto;
+    font-size: 28pt;
+    background-color: #ffffff;
+}
+body *{
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+slide>p{
+    margin: auto 0 auto 0;
+}
+slide *:hover{
+    color: #101010;
+}
+slide a{
+    color:inherit;
+    pointer-events: initial;
+}
+a:hover{
+    color:#f02020;
+}
+dmath{
+    font-size: 1em;
+    margin-bottom: 0.2em;
+    margin-top: 0.2em;
+    display: block;
+    text-align:initial;
+    text-align-last: initial;
+}
+imath{
+    font-size: 1em;
+    display: inline-block;
+    text-align:initial;
+    text-align-last: initial;
+}
+cite{
+    font-size: 0.8em;
+    font-family: inherit;
+    font-style: inherit;
+}
+slide {
+    position: relative;
+    width: 177.8rem;
+    height: 100rem;
+    padding-left: 1.5em;
+    padding-top: 0.8em;
+    padding-right: 1.5em;
+    padding-bottom: 0.8em;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+    border: 0.05rem solid black;
+
+    text-align: justify;
+    text-align-last: left;
+}
+.cHidden header>span:nth-of-type(2)::after{
+    content:" (Hidden page)";
+    color:red;
+}
+code {
+    counter-reset: nlCounter;
+    font-size:0.7em;
+}
+code > pre{
+    line-height: 1.2em;
+}
+ul, ol{
+    vertical-align:top;
+    line-height: 1.5em;
+    padding-top: 0;
+    padding-left: 1em;
+    margin-bottom: auto;
+    margin-top: auto;
+    text-align: justify;
+    text-align-last: left;
+}
+
+li {
+    margin-bottom: 0.15em;
+}
+li pre{
+    line-height: 1em;
+    margin: 0.2em;
+
+}
+/*following is the title section */
+
+strong{
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+    text-align-last: center;
+    font-size:1.16em;
+}
+table {
+    width: 100%;
+    table-layout: fixed;
+    margin:auto;
+}
+img{
+    display: inline-block;
+    height: 1.1em;
+}
+figure img{
+    display: block;
+    width:96%;
+    height: inherit;
+    max-height: 100%;
+    margin:auto;
+}
+video{
+    display: block;
+    width:96%;
+    max-height: 100%;
+    margin:auto;
+}
+/*
+*/
+caption{
+    font-size: 0.8em;
+    margin-bottom:0.5em;
+    text-align: center;
+    text-align-last: center;
+}
+figcaption{
+    font-size: 0.8em;
+    margin-top:0.5em;
+    text-align: center;
+    text-align-last: center;
+}
+figure{
+    width:100%;
+    max-height: 58rem;
+    margin: auto;
+}
+nl::before{
+    display: inline-block;
+    width: 2em;
+    text-align: right;
+    text-align-last: right;
+    counter-increment: nlCounter;
+    content: counter(nlCounter)":  ";
+}
+td{
+    text-align: center;
+    text-align-last: center;
+}
+figure > table> tr >td{
+    font-size: 0.7em;
+}
+mark{
+    font-weight: bold;
+    background: none;
+}
+xa{
+    color:red;
+}
+.cxa{
+    color:red;
+}
+/***********neumeric table definition************/
+table.cNum{
+    border-spacing: 0px;
+}
+table.cNum > tr > th:first-of-type{
+    border-right: 1px solid #404040;
+}
+table.cNum > tr:nth-of-type(1) > th{
+    border-bottom: 1px solid #404040;
+    padding: 0.4em;
+}
+table.cNum > tr:nth-of-type(2) > *{
+    border-top: 1px solid #404040;
+    padding-top: 0.4em;
+}
+table.cNum > tr:last-of-type > *{
+    margin: 0;
+    border-bottom: 1px solid #404040;
+    padding-bottom: 0.4em;
+}
+table.cNum td{
+    text-align: center;
+}
+table.cNum th{
+    font-weight: normal;
+    text-align: center;
+    text-align-last: center;
+}
+/***********neumeric table definition************/
+table.cArg{
+    border-spacing: 0px;
+}
+table.cArg > tr > th:first-of-type{
+    border-right: 1px solid #404040;
+}
+table.cArg > tr:nth-of-type(1) > th{
+    border-bottom: 1px solid #404040;
+    padding: 0.4em;
+}
+table.cArg > tr:nth-of-type(2) > *{
+    border-top: 1px solid #404040;
+    padding-top: 0.4em;
+}
+table.cArg > tr:last-of-type > *{
+    margin: 0;
+    border-bottom: 1px solid #404040;
+    padding-bottom: 0.4em;
+}
+table.cArg td{
+    text-align: left;
+    text-align-last: left;
+    padding:0.1em 0.2em;
+}
+table.cArg th{
+    font-weight: normal;
+    text-align: left;
+    text-align-last: left;
+}
+
+.cHidden{
+    display: none;
+}
+
+.cLatex{
+    display: none;
+}
+
+
+
+/**************************************************/
+/********** headers and footers *******************/
+/**************************************************/
+
+
+
+
+header{
+    width: 100%;
+    font-size: 1.5em;
+    line-height: 1.5em;
+    margin-bottom:0.4em;
+    display: flex;
+}
+header > *:first-child{
+    margin-left:0;
+    text-align-last: left;
+    text-align: left;
+}
+header > *{
+    display: inline-block;
+    vertical-align: top;
+}
+cite{
+    font-size: 0.4em;;
+}
+section > slide > header > cite{
+    font-size: 0.4em;
+    line-height: 1em;
+    width:20%;
+    margin-right: 0;
+    margin-left: auto;
+    text-align-last: right;
+    text-align: justify;
+}
+section > slide > header > cite *{
+    display: inline-block;
+}
+
+
+/*title*/
+body > slide  > header{
+    margin-top:12%;
+    display: block;
+    text-align: center;
+    text-align-last: center;
+    font-size: 1.8em;
+}
+body > slide  > header> cite{
+    margin-top:0.6em;
+    display: block;
+    text-align: center;
+    text-align-last: center;
+    font-size: 0.7em;
+    line-height:0.7em;
+}
+/*affiliates*/
+body > slide > address{
+    margin-top:0.7em;
+    text-align: center;
+    text-align-last: center;
+    font-style: normal;
+    font-size: 1.3em;
+    line-height: 1.3em;
+}
+/*author*/
+body > slide  > author{
+    margin-top: 0.8em;
+    text-align-last: center;
+    text-align: center;
+    font-size: 1.6em;
+}
+/*date*/
+body > slide > time{
+    margin-top: 1em;
+    text-align-last: center;
+    text-align: center;
+    font-size: 1.2em;
+    display: block;
+}
+footer{
+    width: 100%;
+    font-size: 0.9em;
+    margin-bottom:0;
+    margin-top: auto;
+    vertical-align:bottom;
+}
+footer > *{
+    display: inline-block;
+    vertical-align: middle;
+    text-align-last: center;
+    text-align: center;
+}
+footer > time{
+    width: 24%;
+}
+footer > span{
+    width: 64%;
+}
+footer > span.cSlideNumber{
+    width: 12%;
+}

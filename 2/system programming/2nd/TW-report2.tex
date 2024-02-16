@@ -1,0 +1,102 @@
+\documentclass[fleqn, a4paper. 12pt]{ltjsarticle} % lualatex guidance.tex
+\usepackage{amsmath,txfonts}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage[margin=31mm]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+
+\newcommand{\XA}[1]{\begingroup \color{red}}
+\newcommand{\AX}[1]{\endgroup}
+
+\newcommand{\br}[1]{\left(#1\right)}                %normal brackets
+\newcommand{\cbr}[1]{\left\{#1\right\}}             %curly brackets
+\newcommand{\sbr}[1]{\left\lbrack #1 \right\rbrack} %square brackets
+
+\usepackage{listings} 
+
+\lstset{
+  basicstyle={\linespread{0.6}},
+  identifierstyle={\small},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+%  numbers=left,
+  xrightmargin=1em,
+  xleftmargin=2em,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1em
+}
+\begin{document}
+    \begin{titlepage}
+      \begin{center}
+      {
+      \Huge 2023年度\\システムプログラミング実験}
+      
+      \vspace{4cm}
+             {\Huge 第2回\\テクニカルライティング\\
+               実験レポート\\}
+             \vspace{4cm}
+                    {\large 実験日：2023年10月10日（水）\\提出日：2023年10月10日（水）\\}
+                    
+                    {\large 学修番号：XXXXXXXX\\氏名：柴田祐樹\\ 共同実験者：XXXXXXXX 下川原英理}
+    \end{center}  
+  \end{titlepage}
+  \newcommand{\fB}{f_\mathrm{B}}
+  \newcommand{\fQ}{f_\mathrm{Q}}
+  \newcommand{\fM}{f_\mathrm{M}}
+  \newcommand{\fSTL}{f_\mathrm{STL}}
+  
+    \section{はじめに}
+    本書ではシステムプログラミング実験におけるテクニカルライティングの第2回の課題を説明する．体裁について本書自体を参考にしてもらい構わない．本課題はレポートにまとめてKibacoの課題のページの「第2回課題」にPoutable Document Format (PDF) \footnote{\url{https://www.adobe.com/jp/acrobat/about-adobe-pdf.html}}により提出せよ．
+
+    \section{課題}
+    整列アルゴリズムの計算時間を計測し，その結果に基づき性能を評価する．
+    
+    評価の対象とするアルゴリズムは以下の4つを最低限用意するものとする．平均計算時間を示す記号を併記してある．
+    \begin{itemize}
+        \item バブルソート: $\fB$
+        \item クイックソート: $\fQ$
+        \item マージソート: $\fM$
+        \item C++ Standard Template Library\footnote{\url{https://www.boost.org/sgi/stl/doc_introduction.html}} のsort関数によるソート: $\fSTL$
+    \end{itemize}
+
+    よく知られているように，要素数を$N$として，$\fB(N) = O(N^2), \fQ(N) = O(N\ln N), \fM(N) = O(N\ln N)$となるはずである\cite{Sort}．$\fSTL$については公式の資料を見なければわからないが，実験で確かめると良い．
+    
+    上記ソートについて計測を行い，横軸を要素数，縦軸を実行時間としたグラフを作成する．ただし，縦軸，横軸ともに対数軸であるとする．
+
+    $N$についてであるが，対数軸を横軸に取るため，偏りなく計測点を取るためには，等比数列により決定すると良い．実験の番号を$k=1, 2,..., K$としたとき，第$k$回の実験における要素数を$N_k$として，次の式(\ref{e3})により定めると良い．
+    \begin{equation}
+        \label{e3}
+        M_k = 1.2M_{k-1}, N_k = R(M_k), k=1,2,...,K-1.
+    \end{equation}
+    ここで，$M_1 = 32$とし，関数$R(a)$は実数の引数の$a$を超えない最大の整数値を返すものとする（$a$の小数点以下を切り捨てた値と考えて良い．）．実験は基本的に$K=32$で行うものとする．数値の詳細を比較するために表により数値を併記すると有用であるが，表の記載は任意とする．
+
+
+    \section{追加課題}
+    各アルゴリズム毎の点の集合を2乗誤差関数による回帰により近似する直線を求め，この直線を前節の課題のグラフに重ねて表示せよ．また，この直線の傾きと，理論的に知られる$d$の値を比較し考察せよ．Excell の等の線形回帰曲線（近似直線）作成機能を用いても良い．
+    \section{参考結果}
+    参考までに，想定される結果の一部を示したグラフを図\ref{f1}に示す．接尾のRは回帰直線を意味する．
+    \begin{figure}
+        \includegraphics[width=\textwidth]{TW-report2.fig.pdf}
+        \caption{参考}
+        \label{f1}
+    \end{figure}
+    \section{おわりに}
+    本書ではシステムプログラミング実験におけるテクニカルライティングの第2回課題を説明した．また，レポートの作成の参考になるよう全体を構成した．
+    \section{付録}
+    別添で以下のファイルが用意されている．
+    \begin{itemize}
+        \item sort.cpp: 1点だけ実験結果を生成するコード　
+        \item sort.regression.cpp: 回帰直線を対数軸上で生成するコード
+    \end{itemize}
+    sort.cpp は一つの実験結果のみを出力するコードである．これを繰り返し実行することにより実験結果の生成が可能である．sort.regression.cpp は sort.cpp により出力された Camma Separated Values (CSV)\footnote{https://datatracker.ietf.org/doc/html/rfc4180} 形式のファイルを読み取り，第一列を横軸，第2軸を縦軸として回帰直線を出力する．ただし，対数軸で描画されることを想定しているため，指数関数に変換され出力される．
+
+    \begin{thebibliography}{00}
+        \bibitem{Sort}渡部有隆，プログラミングコンテスト攻略のためのアルゴリズムとデータ構造，マイナビ出版, 第10版，2019
+        \end{thebibliography}
+\end{document}

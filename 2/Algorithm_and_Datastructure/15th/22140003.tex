@@ -1,0 +1,78 @@
+\documentclass[fleqn, a4paper. 12pt]{ltjsarticle} 
+% following is the compile command （以下のコマンドでコンパイル可能）
+% $ lualatex guidance.tex 
+% you need to install texlive to execute the above.（texlive を入れる必要がある．）
+\usepackage{amsmath,txfonts}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{subcaption}
+\usepackage[margin=31mm]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+
+
+\begin{document}
+\begin{titlepage}
+      \begin{center}
+      {
+      \Huge 2023年度\\アルゴリズムとデータ構造 最終課題３}
+      
+      \vspace{4cm}
+             {\Huge テクニカルライティング\\
+               実験レポート\\}
+             \vspace{4cm}
+                    {\large 提出日：2024年2月6日（火）\\}
+                    
+                    {\large 学修番号：22140003\\氏名：佐倉仙汰郎}
+    \end{center}  
+  \end{titlepage}
+
+  \section{コードと説明}
+  \begin{lstlisting}[language=C++]
+    void makeGraph(){
+        ifstream file("graph_edgelist.txt");
+        while(!file.eof()){
+            int a,b;
+            file >> a >>b;
+            G[a][b] = 1;
+            G[b][a] = 1;
+        }
+    }
+    \end{lstlisting}
+    ここではファイルから読み込み、隣接行列を作る．\\
+
+
+    \begin{lstlisting}[language=C++]
+        bool isConnected(){
+    queue<int> q;
+    int start = 0;
+    q.push(start);
+
+    while(!q.empty()){
+        int v = q.front();
+        visited[v] = true;
+        q.pop();
+        for(int i = 0; i < 34; i++){
+            if(visited[i])continue;
+            else if(G[v][i] == 1){
+                q.push(i);
+            }
+        }
+    }
+
+    if(isvisited())return true;
+    else{
+        return false;
+    }
+    }
+    \end{lstlisting}
+    この関数で、連結行列の判定を行っている．BFSを使い到達可能なノードの数が、すべてのノードの数と等しいことを確認している．
+    まずは、キューを作り今回は0をスタート地点として探索を開始する．
+    while文を使いキューが空になるまで、探索をする．
+    最初のノードに隣接しているノードをキューに追加し、最初のノードは探索済みとする．
+    そして、キューの中にあるノードに隣接しているノードをキューに追加し、そのノードを探索済みとすることで、つながっているノードをすべて探索することができる．
+    また注意点として、隣接しているノードをキューに追加するときに、探索済みのものはスキップしないと無限ループに入ってしまう．
+
+    \section{連結かどうか？}
+    連結である．
+\end{document}
